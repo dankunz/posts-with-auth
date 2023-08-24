@@ -11,8 +11,8 @@ type useAxiosType = {
 
 function useFetch({ url, type, values }: useAxiosType) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const authHeader = useAuthHeader();
   const token = authHeader();
 
