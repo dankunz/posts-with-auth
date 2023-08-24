@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import NavigationBar from "./components/NavigationBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllPostsPage from "./pages/AllPostsPage";
@@ -10,9 +9,8 @@ import { RequireAuth } from "react-auth-kit";
 function App() {
   return (
     <BrowserRouter>
-      <NavigationBar />
-      <Box padding={10}>
-        <Routes>
+      <Routes>
+        <Route element={<NavigationBar />}>
           <Route
             path="/"
             element={
@@ -29,10 +27,10 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Routes>
-      </Box>
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }

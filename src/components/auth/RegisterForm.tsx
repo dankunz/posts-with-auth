@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -7,33 +8,35 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "../../api/axios";
+import axios from "../../api/publicAxios";
 import { RegisterUser } from "../../types/types";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
   const {
     handleSubmit,
-    register,
     watch,
+    register,
     formState: { errors },
   } = useForm<RegisterUser>();
-  const url = import.meta.env;
-  console.log(url);
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<RegisterUser> = (values) => {
-    console.log(values);
-    const url = import.meta.env.BASE_URL;
-    console.log(url);
     delete values["confirmPassword"];
-    console.log(values);
     axios
       .post("/auth/signup", {
         ...values,
       })
-      .then((data) => console.log(data))
-      .catch((e) => console.log("error", e.response));
+      .then(() => {
+        toast.success("Account created");
+        navigate("/login");
+      })
+      .catch(() => toast.error("Account cannot be created"));
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Box as={"form"} onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={!!errors.email}>
         <FormLabel>Email:</FormLabel>
         <Input
@@ -86,7 +89,7 @@ export default function RegisterForm() {
           id="password"
           {...register("password", {
             required: "This is required",
-            minLength: { value: 8, message: "Minimum length should be 4" },
+            minLength: { value: 8, message: "Minimum length should be 8" },
           })}
         />
         <FormErrorMessage>
@@ -117,6 +120,6 @@ export default function RegisterForm() {
           Register
         </Button>
       </Stack>
-    </form>
+    </Box>
   );
 }

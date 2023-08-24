@@ -1,10 +1,10 @@
 import { Box, Heading } from "@chakra-ui/react";
-import CreatePostForm from "../components/CreatePostForm";
+import CreatePostForm from "../components/posts/CreatePostForm";
 
 export default function NewPostPage() {
   return (
-    <Box className="sentence-form">
-      <Heading textAlign={"center"} as="h1" size="xl" mb={"1rem"}>
+    <Box>
+      <Heading textAlign={"center"} as="h1" size="xl" mb={"2rem"}>
         Create a new post
       </Heading>
       <CreatePostForm />

@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { RecoilRoot } from "recoil";
 import { AuthProvider } from "react-auth-kit";
 import { ChakraProvider } from "@chakra-ui/react";
+import refreshApi from "./api/refreshApi.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         authName={"_auth"}
         cookieDomain={window.location.hostname}
         cookieSecure={window.location.protocol === "https:"}
+        refresh={refreshApi}
       >
         <RecoilRoot>
           <App />

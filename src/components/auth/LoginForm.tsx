@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -10,13 +11,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSignIn } from "react-auth-kit";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
-import { useAuthUser } from "react-auth-kit";
-import { useAuthHeader } from "react-auth-kit";
+import axios from "../../api/publicAxios";
+
 type FormValues = {
   email: string;
   password: string;
 };
+
 export default function LoginForm() {
   const {
     handleSubmit,
@@ -25,15 +26,10 @@ export default function LoginForm() {
   } = useForm<FormValues>();
   const navigate = useNavigate();
   const signIn = useSignIn();
-  const auth = useAuthUser();
-  const authHeader = useAuthHeader();
-  console.log("auth", auth());
-  console.log("authHeader", authHeader());
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     await axios
       .post("/auth/login", { ...values })
       .then(({ data }) => {
-        console.log("refresh token save it please", data);
         signIn({
           token: data.accessToken,
           expiresIn: 3600,
@@ -43,6 +39,8 @@ export default function LoginForm() {
             refreshToken: data.refreshToken,
             accessToken: data.accessToken,
           },
+          refreshToken: data.refreshToken,
+          refreshTokenExpireIn: 60,
         });
         toast.success("Successfully logged in");
         navigate("/");
@@ -58,7 +56,7 @@ export default function LoginForm() {
       });
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Box as={"form"} onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={!!errors.email}>
         <FormLabel>Email:</FormLabel>
         <Input
@@ -92,6 +90,6 @@ export default function LoginForm() {
           Login
         </Button>
       </Stack>
-    </form>
+    </Box>
   );
 }

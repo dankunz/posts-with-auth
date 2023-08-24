@@ -1,40 +1,19 @@
-import { Box, Heading, Spinner } from "@chakra-ui/react";
-import React, { Suspense, useMemo } from "react";
-import { Post } from "../types/types";
-import PostTile from "../components/PostTile";
-import usePosts from "../recoil/usePosts";
-import useFetchPosts from "../hooks/useFetchPosts";
-import usePostFilters from "../recoil/usePostFilters";
-import PostsFilter from "../components/PostsFilter";
+import { Box, Center, Heading } from "@chakra-ui/react";
+import PostsFilter from "../components/posts/PostsFilter";
+import { ErrorBoundary } from "react-error-boundary";
+import PostsList from "../components/posts/PostsList";
+import StandardError from "../components/errors/StandardError";
 
 export default function AllPostsPage() {
-  useFetchPosts();
-  const { posts } = usePosts();
-
-  const { postFilters } = usePostFilters();
-  const filteredPosts = useMemo(
-    () =>
-      posts.filter((post: Post) => {
-        return (
-          post.content.includes(postFilters.query) &&
-          (postFilters.userId ? post.authorId === postFilters.userId : true)
-        );
-      }),
-    [posts, postFilters]
-  );
-  console.log(posts);
-
   return (
-    <Box>
-      <Heading mb={10}>All Posts </Heading>
-      <PostsFilter />
-      <Suspense fallback={<Spinner />}>
-        {filteredPosts.map(
-          (post: Post): React.ReactNode => (
-            <PostTile key={post.id} post={post} />
-          )
-        )}
-      </Suspense>
-    </Box>
+    <Center>
+      <Box width={800}>
+        <Heading mb={10}>All Posts </Heading>
+        <PostsFilter />
+        <ErrorBoundary FallbackComponent={StandardError}>
+          <PostsList />
+        </ErrorBoundary>
+      </Box>
+    </Center>
   );
 }
