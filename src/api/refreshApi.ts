@@ -14,7 +14,7 @@ const refreshApi = createRefresh({
       );
       return {
         isSuccess: true,
-        newAuthToken: response.data.access_token,
+        newAuthToken: response.data.access_token || "",
         newAuthTokenExpireIn: 10,
         newRefreshTokenExpiresIn: 60,
       };
@@ -22,6 +22,7 @@ const refreshApi = createRefresh({
       console.error(error);
       return {
         isSuccess: false,
+        newAuthToken: "",
       };
     }
   },
