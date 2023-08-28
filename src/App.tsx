@@ -8,7 +8,7 @@ import { RequireAuth } from "react-auth-kit";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/posts-with-auth/">
       <Routes>
         <Route element={<NavigationBar />}>
           <Route
